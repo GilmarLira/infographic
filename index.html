@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SF Giants Data Visualization</title>
+	<link href="css/style.css" type="text/css" rel="stylesheet">
+	<script src="js/d3.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+	
+	<script type="text/javascript">
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+
+		var svg = d3.select("body").append("svg")
+			.attr("width", width)
+			.attr("height", height);
+			
+		d3.csv("schedule.csv", function(error, rows) {
+			svg.selectAll("circle").data(rows)
+				.enter().append("circle")
+					.attr("cx", function(d, i){ return 100 + i*100; })
+					.attr("cy", height/2)
+					.attr("r", 0)
+					.transition()
+					.ease("elastic-in")
+					.duration(1000)
+					.delay(function(d, i){ return 100+i*100; })	
+					.attr("r", function(d) { return d.R*5; });
+		});
+
+		// function updateWindow(){
+		//     width = window.innerWidth;
+		//     height = window.innerHeight;
+
+		//     svg.attr("width", width).attr("height", height);
+		// }
+		// window.onresize = updateWindow;
+	</script>
+</body>
+</html>
