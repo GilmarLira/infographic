@@ -1,10 +1,10 @@
 body {
 	padding: 0;
 	margin: 0;
-	background: #333;
+	background: #ccc;
 	overflow-y: hidden;
 }
 
 circle {
-	/*fill: rgba(0, 255, 150, .8);*/
+	stroke-width: 5px;
 }

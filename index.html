@@ -8,27 +8,32 @@
 
 </head>
 <body>
-
 	<script type="text/javascript">
 		var width = window.innerWidth;
 		var height = window.innerHeight;
+		var games;
 
-		var svg = d3.select("body").append("svg")
+		var chart = d3.select("body").append("svg")
 			.attr("width", width)
 			.attr("height", height);
 
 		d3.csv("schedule.csv", function(error, rows) {
-			console.log(rows);
-			svg.selectAll("circle").data(rows)
-				.enter().append("circle")
-					.attr("cx", function(d, i){ return 100 + i*100; })
+			games = chart.selectAll("g").data(rows);
+
+			games.enter().append("g").append("circle")
+					.attr("cx", function(d, i){ return 100 + i*10; })
 					.attr("cy", height/2)
 					.attr("r", 0)
 					.style("fill", function(d){
 						if(d["W/L"].substr(0, 1) === "W") {
-							return "orange";
+							return "rgba(255, 132, 0, 0.7)";
 						} else {
-							return "black";
+							return "none";
+						}
+					})
+					.style("stroke", function(d){
+						if(d["W/L"].substr(0, 1) === "L") {
+							return "rgba(0, 0, 0, 0.6)";
 						}
 					})
 					.transition()
@@ -36,6 +41,11 @@
 					.duration(1000)
 					.delay(function(d, i){ return 100+i*100; })
 					.attr("r", function(d) { return d.R*5; });
+
+			// games.append("text")
+			// 	.text(function(d) { return d.R + "-" + d.RA; })
+			// 	.attr("x", function(d, i){ return 100 + i*10; })
+			// 	.attr("y", height/2);
 		});
 
 		// function updateWindow(){
