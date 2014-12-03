@@ -12,21 +12,67 @@
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 		var games;
+		var scale_factor = 15;
+
+		var x = d3.scale.linear().range([0, width]);
+		var y = d3.time.scale().range([height, 0]);
+
+		var xAxis = d3.svg.axis().scale(x)
+			.orient("top").ticks(10);
+		var yAxis = d3.svg.axis().scale(y)
+			.orient("right").ticks(5);
 
 		var chart = d3.select("body").append("svg")
 			.attr("width", width)
 			.attr("height", height);
 
-		d3.csv("schedule.csv", function(error, rows) {
-			games = chart.selectAll("g").data(rows);
+		// var slider = d3.select("body").append("svg")
+		// 	.attr("id", "slider")
+		// 	.attr("width", 100)
+		// 	.attr("height", height);
 
-			games.enter().append("g").append("circle")
-					.attr("cx", function(d, i){ return 100 + i*10; })
-					.attr("cy", height/2)
+		var format = d3.time.format("%A %b %e %Y");
+
+		d3.csv("schedule.csv")
+			.row(function(d) { return {
+				'Game': +d["Gm#"],
+				'Date': format.parse(d.Date + " 2014"),
+				'Team': d.Tm,
+				'Place': d[""],
+				'Opponent': d.Opp,
+				'W/L': d["W/L"],
+				'Scored': d.R,
+				'Allowed': d.RA,
+				'Innings': d.Inn,
+				'W-L': d["W-L"],
+				'Rank': +d.Rank,
+				'Duration': d.Time,
+				'D/N': d["D/N"],
+				'Attendance': d.Attendance,
+				'Streak': d.Streak
+				};
+			})
+		 	.get(function(error, rows) {
+				// months = slider.selectAll("text").data(rows);
+				//
+				// var monthNameFormat = d3.time.format("%B");
+				//
+				// months.enter().append("text")
+				// 	.text(function(d) { return monthNameFormat(d.Date); })
+				// 	.attr("y", function(d, i) { return i * 25;});
+
+				x.domain([0, rows.length]);
+				y.domain(d3.extent(rows, function(d) { return d.Date; }));
+
+				games = chart.selectAll("g").data(rows);
+
+				games.enter().append("g").append("circle")
+					.attr("cx", function(d, i){ return x(i); })
+					.attr("cy", function(d) { return y(d.Date); })
 					.attr("r", 0)
 					.style("fill", function(d){
 						if(d["W/L"].substr(0, 1) === "W") {
-							return "rgba(255, 132, 0, 0.7)";
+							return "rgba(255, 93, 0, 0.7)";
 						} else {
 							return "none";
 						}
@@ -36,16 +82,26 @@
 							return "rgba(0, 0, 0, 0.6)";
 						}
 					})
+					.style("stroke-width", function(d){
+						return (d["W/L"].substr(0, 1) === "L") ? scale_factor/2 : 0;
+					})
 					.transition()
 					.ease("elastic-in")
 					.duration(1000)
-					.delay(function(d, i){ return 100+i*100; })
-					.attr("r", function(d) { return d.R*5; });
+					// .delay(function(d, i){ return 100+i*100; })
+					.attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; });
 
-			// games.append("text")
-			// 	.text(function(d) { return d.R + "-" + d.RA; })
-			// 	.attr("x", function(d, i){ return 100 + i*10; })
-			// 	.attr("y", height/2);
+
+			// Add the X Axis
+			chart.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+
+			// Add the Y Axis
+			chart.append("g")
+				.attr("class", "y axis")
+				.call(yAxis);
 		});
 
 		// function updateWindow(){
