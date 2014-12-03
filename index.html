@@ -88,7 +88,7 @@
 					.transition()
 					.ease("elastic-in")
 					.duration(1000)
-					// .delay(function(d, i){ return 100+i*100; })
+					.delay(function(d, i){ return 100+i*50; })
 					.attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; });
 
 
