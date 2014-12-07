@@ -1,10 +1,3 @@
-
-/////////////////////////////////////////////////
-// General functions
-/////////////////////////////////////////////////
-
-
-
 /////////////////////////////////////////////////
 // D3.js Data Visualization
 /////////////////////////////////////////////////
@@ -28,12 +21,7 @@ var yAxis = d3.svg.axis().scale(y)
 var chart = d3.select("body").append("svg")
   .attr("width", width)
   .attr("height", height);
-
-// var slider = d3.select("body").append("svg")
-// 	.attr("id", "slider")
-// 	.attr("width", 100)
-// 	.attr("height", height);
-
+  
 var format = d3.time.format("%A %b %e %Y");
 
 d3.csv("schedule.csv")
@@ -64,13 +52,13 @@ d3.csv("schedule.csv")
 
     // Get x and y dimensions from data
     x.domain([0, rows.length]);
-    y.domain(d3.extent(rows, function(d) { return d.Date; }));
+//     y.domain(d3.extent(rows, function(d) { return d.Date; }));
 
     // Copy data to global variable
     data = rows;
 
     // Don't show anything in the begining
-    time_scrub(0);
+    time_scrub(rows.length);
   });
 
 function time_scrub(val) {
@@ -87,11 +75,12 @@ function redraw() {
   games.enter()
     .append("g").append("circle")
     .attr("cx", function(d, i){ return x(i); })
-    .attr("cy", function(d) { return y(d.Date); })
+    .attr("cy", height/2)
     .attr("r", 0)
+    .style("opacity", 0)
     .style("fill", function(d){
       if(d["W/L"].substr(0, 1) === "W") {
-        return "rgba(255, 93, 0, 0.7)";
+        return "rgba(255, 93, 0, 0.3)";
       } else {
         return "none";
       }
@@ -108,9 +97,10 @@ function redraw() {
   games.selectAll("circle")
     .transition()
     .ease("elastic-in")
-    .duration(1000)
-    .delay(function(d, i){ return 100+i*50; })
-    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; });
+    .duration(500)
+//     .delay(function(d, i){ return 100+i*50; })
+    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; })
+    .style("opacity", 100);
 
 
   games.exit()
@@ -118,8 +108,9 @@ function redraw() {
     .transition()
     .ease("ease-out")
     .duration(200)
-    .delay(function(d, i){ return 100+i*50; })
-    .attr("r", 0);
+//     .delay(function(d, i){ return 100+i*50; })
+    .attr("r", 0)
+    .style("opacity", 0);
 
   // Add the X Axis
   // chart.append("g")
@@ -132,27 +123,6 @@ function redraw() {
   //   .attr("class", "y axis")
   //   .call(yAxis);
 }
-
-
-
-function show(selection) {
-  selection.selectAll("circle")
-    .transition()
-    .ease("elastic-in")
-    .duration(1000)
-    .delay(function(d, i){ return 100+i*50; })
-    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; });
-}
-
-function hide(selection) {
-  selection.selectAll("circle")
-  .transition()
-  .ease("ease-in")
-  .duration(500)
-  .delay(function(d, i){ return 100+i*50; })
-  .attr("r", 0);
-}
-
 
 // function updateWindow(){
 //     width = window.innerWidth;
