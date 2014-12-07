@@ -1,14 +1,37 @@
 body {
-	padding: 0;
+	background: #222;
 	margin: 0;
-	background: #ccc;
 	overflow-y: hidden;
+	padding: 0;
+	position: relative;
+	transition: all .5s ease;
 }
 
-#slider {
-	position: absolute;
-	top: 0;
-	left: 0;
+.timeline {
+	bottom: 50px;
+	/*height: 20px;*/
+	margin: 0 5%;
+	position:absolute;
+	width: 90%;
+}
+
+.slider {
+	height: 5px;
+	margin: 0 auto;
+	width: 100%;
+	-webkit-appearance: none;
+}
+
+.slider:focus {
+	outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	background-color: white;
+	height: 30px;
+	width: 30px;
+	border-radius: 15px;
 }
 
 text {
