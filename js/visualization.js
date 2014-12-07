@@ -10,10 +10,12 @@
 /////////////////////////////////////////////////
 
 var data;
+var show;
 var width = window.innerWidth;
 var height = window.innerHeight;
 var games;
 var scale_factor = 15;
+var time = 0;
 
 var x = d3.scale.linear().range([0, width]);
 var y = d3.time.scale().range([height, 0]);
@@ -55,68 +57,83 @@ d3.csv("schedule.csv")
   })
   .get(function(error, rows) {
 
-    data = rows;
-
     // Set timeline duration
     d3.select(".slider")
       .attr("max", rows.length)
       .property("value", 0);
 
+    // Get x and y dimensions from data
+    x.domain([0, rows.length]);
+    y.domain(d3.extent(rows, function(d) { return d.Date; }));
 
-    x.domain([0, data.length]);
-    y.domain(d3.extent(data, function(d) { return d.Date; }));
+    // Copy data to global variable
+    data = rows;
 
-    games = chart.selectAll("g").data(data);
-
-    games.enter().append("g").append("circle")
-      .attr("cx", function(d, i){ return x(i); })
-      .attr("cy", function(d) { return y(d.Date); })
-      .attr("r", 0)
-      .style("fill", function(d){
-        if(d["W/L"].substr(0, 1) === "W") {
-          return "rgba(255, 93, 0, 0.7)";
-        } else {
-          return "none";
-        }
-      })
-      .style("stroke", function(d){
-        if(d["W/L"].substr(0, 1) === "L") {
-          return "rgba(0, 0, 0, 0.6)";
-        }
-      })
-      .style("stroke-width", function(d){
-        return (d["W/L"].substr(0, 1) === "L") ? scale_factor/2 : 0;
-      });
-      // .transition()
-      // .ease("elastic-in")
-      // .duration(1000)
-      // .delay(function(d, i){ return 100+i*50; })
-      // .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; });
-
-
-    // Add the X Axis
-    chart.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
-
-    // Add the Y Axis
-    chart.append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+    // Don't show anything in the begining
+    time_scrub(0);
   });
 
-
 function time_scrub(val) {
-  console.log("Current game: " + val);
-  games
-    .select(function(d, i) { return i <= val ? this : null; })
-    .call(show);
+  // Get games for current timeline slider value
+  show = data.slice(0, val);
 
-  games
-    .select(function(d, i) { return i > val ? this : null; })
-    .call(hide);
+  // Display those games
+  redraw();
 }
+
+function redraw() {
+  games = chart.selectAll("g").data(show);
+
+  games.enter()
+    .append("g").append("circle")
+    .attr("cx", function(d, i){ return x(i); })
+    .attr("cy", function(d) { return y(d.Date); })
+    .attr("r", 0)
+    .style("fill", function(d){
+      if(d["W/L"].substr(0, 1) === "W") {
+        return "rgba(255, 93, 0, 0.7)";
+      } else {
+        return "none";
+      }
+    })
+    .style("stroke", function(d){
+      if(d["W/L"].substr(0, 1) === "L") {
+        return "rgba(0, 0, 0, 0.6)";
+      }
+    })
+    .style("stroke-width", function(d){
+      return (d["W/L"].substr(0, 1) === "L") ? scale_factor/2 : 0;
+    });
+
+  games.selectAll("circle")
+    .transition()
+    .ease("elastic-in")
+    .duration(1000)
+    .delay(function(d, i){ return 100+i*50; })
+    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; });
+
+
+  games.exit()
+    .selectAll("circle")
+    .transition()
+    .ease("ease-out")
+    .duration(200)
+    .delay(function(d, i){ return 100+i*50; })
+    .attr("r", 0);
+
+  // Add the X Axis
+  // chart.append("g")
+  //   .attr("class", "x axis")
+  //   .attr("transform", "translate(0," + height + ")")
+  //   .call(xAxis);
+
+  // Add the Y Axis
+  // chart.append("g")
+  //   .attr("class", "y axis")
+  //   .call(yAxis);
+}
+
+
 
 function show(selection) {
   selection.selectAll("circle")
