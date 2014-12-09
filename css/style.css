@@ -12,7 +12,11 @@ body {
 	overflow-y: hidden;
 	padding: 0;
 	position: relative;
-	transition: all .5s ease;
+	/*transition: all .5s ease;*/
+}
+
+#grid circle {
+	fill: rgba(180, 180, 180, .6);
 }
 
 .timeline {

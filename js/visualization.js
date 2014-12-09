@@ -6,7 +6,6 @@ var data;
 var show;
 var width = window.innerWidth;
 var height = window.innerHeight;
-var games;
 var scale_factor = 15;
 var time = 0;
 
@@ -21,6 +20,10 @@ var yAxis = d3.svg.axis().scale(y)
 var chart = d3.select("body").append("svg")
   .attr("width", width)
   .attr("height", height);
+
+var games;
+var scores = chart.append("g").attr("id", "scores");
+var grid = chart.append("g").attr("id", "grid");
   
 var format = d3.time.format("%A %b %e %Y");
 
@@ -70,10 +73,11 @@ function time_scrub(val) {
 }
 
 function redraw() {
-  games = chart.selectAll("g").data(show);
+
+  games = scores.selectAll("circle").data(show);
 
   games.enter()
-    .append("g").append("circle")
+    .append("circle")
     .attr("cx", function(d, i){ return x(i); })
     .attr("cy", height/2)
     .attr("r", 0)
@@ -94,23 +98,22 @@ function redraw() {
       return (d["W/L"].substr(0, 1) === "L") ? scale_factor/2 : 0;
     });
 
-  games.selectAll("circle")
+  games
     .transition()
     .ease("elastic-in")
     .duration(500)
 //     .delay(function(d, i){ return 100+i*50; })
     .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; })
     .style("opacity", 100);
-
-
+  
   games.exit()
-    .selectAll("circle")
     .transition()
     .ease("ease-out")
     .duration(200)
 //     .delay(function(d, i){ return 100+i*50; })
     .attr("r", 0)
-    .style("opacity", 0);
+    .style("opacity", 0)
+    .remove();
 
   // Add the X Axis
   // chart.append("g")
@@ -122,6 +125,85 @@ function redraw() {
   // chart.append("g")
   //   .attr("class", "y axis")
   //   .call(yAxis);
+
+
+  grid = chart.select("#grid").selectAll("g").data(show);
+
+  grid.enter()
+    .append("g")
+    .each(function(d, i) {
+
+      // home game
+      d3.select(this).append("circle")
+        .attr("r", d.Place == "" ? 0 : 2)
+        .attr("cx", x(i))
+        .attr("cy", 100);
+
+      // away game
+      d3.select(this).append("circle")
+        .attr("r", d.Place == "@" ? 0 : 2)
+        .attr("cx", x(i))
+        .attr("cy", 120);
+
+      // win
+      d3.select(this).append("circle")
+        .attr("r", d["W/L"] == "W" ? 0 : 2)
+        .attr("cx", x(i))
+        .attr("cy", 140);
+
+      // loss
+      d3.select(this).append("circle")
+        .attr("r", d["W/L"] == "L" ? 0 : 2)
+        .attr("cx", x(i))
+        .attr("cy", 160);
+
+      // scored
+      d3.select(this).append("circle")
+        .attr("r", d.Scored / 2)
+        .attr("cx", x(i))
+        .attr("cy", 180);
+
+      // allowed
+      d3.select(this).append("circle")
+        .attr("r", d.Allowed / 2)
+        .attr("cx", x(i))
+        .attr("cy", 200);
+
+      // rank
+      // d3.select(this).append("circle")
+      //   .attr("r", d.Allowed / 2)
+      //   .attr("cx", x(i))
+      //   .attr("cy", 200);
+
+      // time
+      d3.select(this).append("circle")
+        .attr("r", d.Duration.substr(0,1))
+        .attr("cx", x(i))
+        .attr("cy", 220);
+
+      // attendance
+      d3.select(this).append("circle")
+        .attr("r", d.Attendance / 10000)
+        .attr("cx", x(i))
+        .attr("cy", 240);
+
+      // attendance
+      // d3.select(this).append("circle")
+      //   .attr("r", d.Attendance / 10000)
+      //   .attr("cx", x(i))
+      //   .attr("cy", 240);
+    });
+
+  grid.exit()
+    .selectAll("circle")
+    .transition()
+    .duration(200)
+    .attr("r", 0);
+
+  grid.exit()
+    .remove();
+
+
 }
 
 // function updateWindow(){
