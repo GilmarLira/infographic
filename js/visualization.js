@@ -23,9 +23,9 @@ var chart = d3.select("body").append("svg")
   .attr("height", height);
 
 var games;
-var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
-var grid = chart.append("g").attr("id", "grid");
-var pie = chart.append("g").attr("id", "pie").attr("transform", "translate("+width/2+", "+height*.75+")");
+// var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
+// var grid = chart.append("g").attr("id", "grid");
+// var pie = chart.append("g").attr("id", "pie").attr("transform", "translate("+width/2+", "+height*.75+")");
   
 var format = d3.time.format("%A %b %e %Y");
 
@@ -53,7 +53,7 @@ d3.csv("schedule.csv")
     // Set timeline duration
     d3.select(".slider")
       .attr("max", rows.length)
-      .property("value", 0);
+      .property("value", rows.length);
 
     // Get x and y dimensions from data
     x.domain([0, rows.length]);
@@ -74,31 +74,107 @@ function time_scrub(val) {
   redraw();
 }
 
+function y_value(game, r) {
+  return Math.sin(-Math.PI/2/data.length*game) * r;
+}
+
+function x_value(game, r) {
+  return -Math.cos(Math.PI/2/data.length*game) * r;
+}
+
 function redraw() {
 
-  games = scores.selectAll("circle").data(show, function(d) { return d.Game; });
+  games = chart.selectAll("g").data(show, function(d) { return d.Game; });
+  // games = chart.selectAll("g").data(show);
 
   games.enter()
-    .append("circle")
-    .attr("cx", function(d, i){ return -Math.cos(Math.PI/2/data.length*i) * radius; })
-    .attr("cy", function(d, i){ return Math.sin(-Math.PI/2/data.length*i) * radius; })
-    .attr("r", 0)
-    .style("opacity", 0)
-    .style("fill", function(d){
-      if(d["W/L"].substr(0, 1) === "W") {
-        return "rgba(255, 93, 0, 1)";
-      } else {
-        return "rgba(0, 0, 0, 1)";
-      }
-    });
+    .append("g")
+    .attr("class", "game")
+    .attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)")
+    .each(function(d, i) {
+      // Score
+      d3.select(this).append("circle")
+        .attr("class", "score")
+        .attr("cx", x_value(i, radius))
+        .attr("cy", y_value(i, radius))
+        .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
+        .style("opacity", 0)
+        .style("fill", function(d){
+          return d["W/L"].substr(0, 1) === "W" ? "rgba(255, 93, 0, 1)" : "rgba(0, 0, 0, 1)";
+        });
 
-  games
+      // home game
+      d3.select(this).append("circle")
+        .attr("r", d.Place == "" ? 0 : 2)
+        .attr("cx", x_value(i, radius*1.5))
+        .attr("cy", y_value(i, radius*1.5));
+
+      // away game
+      d3.select(this).append("circle")
+        .attr("r", d.Place == "@" ? 0 : 2)
+        .attr("cx", x_value(i, radius*1.45))
+        .attr("cy", y_value(i, radius*1.45));
+
+      // win
+      d3.select(this).append("circle")
+        .attr("r", d["W/L"] == "W" ? 0 : 2)
+        .attr("cx", x_value(i, radius*1.4))
+        .attr("cy", y_value(i, radius*1.4));
+
+      // loss
+      d3.select(this).append("circle")
+        .attr("r", d["W/L"] == "L" ? 0 : 2)
+        .attr("cx", x_value(i, radius*1.35))
+        .attr("cy", y_value(i, radius*1.35));
+
+      // scored
+      d3.select(this).append("circle")
+        .attr("r", d.Scored / 2)
+        .attr("cx", x_value(i, radius*1.3))
+        .attr("cy", y_value(i, radius*1.3));
+
+      // allowed
+      d3.select(this).append("circle")
+        .attr("r", d.Allowed / 2)
+        .attr("cx",x_value(i, radius*1.25))
+        .attr("cy",y_value(i, radius*1.25));
+
+      // rank
+      // d3.select(this).append("circle")
+      //   .attr("r", d.Allowed / 2)
+      //   .attr("cx", x(i))
+      //   .attr("cy", 200);
+
+      // time
+      d3.select(this).append("circle")
+        .attr("r", d.Duration.substr(0,1))
+        .attr("cx", x_value(i, radius*1.2))
+        .attr("cy", y_value(i, radius*1.2));
+
+      // attendance
+      d3.select(this).append("circle")
+        .attr("r", d.Attendance / 10000)
+        .attr("cx", x_value(i, radius*1.15))
+        .attr("cy", y_value(i, radius*1.15));
+
+      // attendance
+      // d3.select(this).append("circle")
+      //   .attr("r", d.Attendance / 10000)
+      //   .attr("cx", x(i))
+      //   .attr("cy", 240);
+
+
+    });
+    
+
+  games.selectAll("circle")
     .transition()
     .ease("elastic-in")
     .duration(500)
-//     .delay(function(d, i){ return 100+i*50; })
-    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
-    .style("opacity", 100);
+    .style("fill", "white")
+    // .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
+    // .attr("r", 5)
+    .style("opacity", .8);
   
   games.exit()
     .transition()
@@ -121,81 +197,81 @@ function redraw() {
   //   .call(yAxis);
 
 
-  grid = chart.select("#grid").selectAll("g").data(show);
+  // grid = chart.select("#grid").selectAll("g").data(show);
 
-  grid.enter()
-    .append("g")
-    .each(function(d, i) {
+  // grid.enter()
+  //   .append("g")
+  //   .each(function(d, i) {
 
-      // home game
-      d3.select(this).append("circle")
-        .attr("r", d.Place == "" ? 0 : 2)
-        .attr("cx", x(i))
-        .attr("cy", 100);
+  //     // home game
+  //     d3.select(this).append("circle")
+  //       .attr("r", d.Place == "" ? 0 : 2)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 100);
 
-      // away game
-      d3.select(this).append("circle")
-        .attr("r", d.Place == "@" ? 0 : 2)
-        .attr("cx", x(i))
-        .attr("cy", 120);
+  //     // away game
+  //     d3.select(this).append("circle")
+  //       .attr("r", d.Place == "@" ? 0 : 2)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 120);
 
-      // win
-      d3.select(this).append("circle")
-        .attr("r", d["W/L"] == "W" ? 0 : 2)
-        .attr("cx", x(i))
-        .attr("cy", 140);
+  //     // win
+  //     d3.select(this).append("circle")
+  //       .attr("r", d["W/L"] == "W" ? 0 : 2)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 140);
 
-      // loss
-      d3.select(this).append("circle")
-        .attr("r", d["W/L"] == "L" ? 0 : 2)
-        .attr("cx", x(i))
-        .attr("cy", 160);
+  //     // loss
+  //     d3.select(this).append("circle")
+  //       .attr("r", d["W/L"] == "L" ? 0 : 2)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 160);
 
-      // scored
-      d3.select(this).append("circle")
-        .attr("r", d.Scored / 2)
-        .attr("cx", x(i))
-        .attr("cy", 180);
+  //     // scored
+  //     d3.select(this).append("circle")
+  //       .attr("r", d.Scored / 2)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 180);
 
-      // allowed
-      d3.select(this).append("circle")
-        .attr("r", d.Allowed / 2)
-        .attr("cx", x(i))
-        .attr("cy", 200);
+  //     // allowed
+  //     d3.select(this).append("circle")
+  //       .attr("r", d.Allowed / 2)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 200);
 
-      // rank
-      // d3.select(this).append("circle")
-      //   .attr("r", d.Allowed / 2)
-      //   .attr("cx", x(i))
-      //   .attr("cy", 200);
+  //     // rank
+  //     // d3.select(this).append("circle")
+  //     //   .attr("r", d.Allowed / 2)
+  //     //   .attr("cx", x(i))
+  //     //   .attr("cy", 200);
 
-      // time
-      d3.select(this).append("circle")
-        .attr("r", d.Duration.substr(0,1))
-        .attr("cx", x(i))
-        .attr("cy", 220);
+  //     // time
+  //     d3.select(this).append("circle")
+  //       .attr("r", d.Duration.substr(0,1))
+  //       .attr("cx", x(i))
+  //       .attr("cy", 220);
 
-      // attendance
-      d3.select(this).append("circle")
-        .attr("r", d.Attendance / 10000)
-        .attr("cx", x(i))
-        .attr("cy", 240);
+  //     // attendance
+  //     d3.select(this).append("circle")
+  //       .attr("r", d.Attendance / 10000)
+  //       .attr("cx", x(i))
+  //       .attr("cy", 240);
 
-      // attendance
-      // d3.select(this).append("circle")
-      //   .attr("r", d.Attendance / 10000)
-      //   .attr("cx", x(i))
-      //   .attr("cy", 240);
-    });
+  //     // attendance
+  //     // d3.select(this).append("circle")
+  //     //   .attr("r", d.Attendance / 10000)
+  //     //   .attr("cx", x(i))
+  //     //   .attr("cy", 240);
+  //   });
 
-  grid.exit()
-    .selectAll("circle")
-    .transition()
-    .duration(200)
-    .attr("r", 0);
+  // grid.exit()
+  //   .selectAll("circle")
+  //   .transition()
+  //   .duration(200)
+  //   .attr("r", 0);
 
-  grid.exit()
-    .remove();
+  // grid.exit()
+  //   .remove();
 
 
   // Draw arc test

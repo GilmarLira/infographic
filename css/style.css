@@ -15,19 +15,6 @@ body {
 	/*transition: all .5s ease;*/
 }
 
-#scores,
-#grid {
-	/*display: none;*/
-}
-
-#pie circle {
-	fill: yellow;
-}
-
-#grid circle {
-	fill: rgba(180, 180, 180, .6);
-
-}
 
 .timeline {
 	bottom: 50px;
