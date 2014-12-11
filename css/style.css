@@ -7,7 +7,7 @@ body{
 }
 
 body {
-	background: #062;
+	background: #333;
 	margin: 0;
 	overflow-y: hidden;
 	padding: 0;
@@ -15,6 +15,9 @@ body {
 	/*transition: all .5s ease;*/
 }
 
+g.game {
+	background: #062;
+}
 
 .timeline {
 	bottom: 50px;

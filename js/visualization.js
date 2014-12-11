@@ -8,7 +8,7 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 var scale_factor = 15;
 var time = 0;
-var radius = 500;
+var radius = 400;
 
 var x = d3.scale.linear().range([0, width]);
 var y = d3.time.scale().range([height, 0]);
@@ -98,46 +98,54 @@ function redraw() {
         .attr("cx", x_value(i, radius))
         .attr("cy", y_value(i, radius))
         .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
-        .style("opacity", 0)
-        .style("fill", function(d){
-          return d["W/L"].substr(0, 1) === "W" ? "rgba(255, 93, 0, 1)" : "rgba(0, 0, 0, 1)";
-        });
+        .style("opacity", 0);
+        // .style("fill", function(d){
+        //   return d["W/L"].substr(0, 1) === "W" ? "rgba(255, 93, 0, 1)" : "rgba(0, 0, 0, 1)";
+        // });
 
       // home game
-      d3.select(this).append("circle")
-        .attr("r", d.Place == "" ? 0 : 2)
-        .attr("cx", x_value(i, radius*1.5))
-        .attr("cy", y_value(i, radius*1.5));
+      if(d.Place == "") {
+        d3.select(this).append("circle")
+          .attr("r", 2)
+          .attr("cx", x_value(i, radius*1.45))
+          .attr("cy", y_value(i, radius*1.45));  
+      }      
 
       // away game
-      d3.select(this).append("circle")
-        .attr("r", d.Place == "@" ? 0 : 2)
-        .attr("cx", x_value(i, radius*1.45))
-        .attr("cy", y_value(i, radius*1.45));
+      if(d.Place == "@") {
+        d3.select(this).append("circle")
+          .attr("r", 2)
+          .attr("cx", x_value(i, radius*1.4))
+          .attr("cy", y_value(i, radius*1.4));  
+      }
 
       // win
-      d3.select(this).append("circle")
-        .attr("r", d["W/L"] == "W" ? 0 : 2)
-        .attr("cx", x_value(i, radius*1.4))
-        .attr("cy", y_value(i, radius*1.4));
+      if(d["W/L"] == "W") {
+        d3.select(this).append("circle")
+          .attr("r", 2)
+          .attr("cx", x_value(i, radius*1.35))
+          .attr("cy", y_value(i, radius*1.35));  
+      }
 
       // loss
-      d3.select(this).append("circle")
-        .attr("r", d["W/L"] == "L" ? 0 : 2)
-        .attr("cx", x_value(i, radius*1.35))
-        .attr("cy", y_value(i, radius*1.35));
+      if(d["W/L"] == "L") {
+        d3.select(this).append("circle")
+          .attr("r", 2)
+          .attr("cx", x_value(i, radius*1.3))
+          .attr("cy", y_value(i, radius*1.3));  
+      }
 
       // scored
       d3.select(this).append("circle")
         .attr("r", d.Scored / 2)
-        .attr("cx", x_value(i, radius*1.3))
-        .attr("cy", y_value(i, radius*1.3));
+        .attr("cx", x_value(i, radius*1.25))
+        .attr("cy", y_value(i, radius*1.25));
 
       // allowed
       d3.select(this).append("circle")
         .attr("r", d.Allowed / 2)
-        .attr("cx",x_value(i, radius*1.25))
-        .attr("cy",y_value(i, radius*1.25));
+        .attr("cx",x_value(i, radius*1.2))
+        .attr("cy",y_value(i, radius*1.2));
 
       // rank
       // d3.select(this).append("circle")
@@ -147,15 +155,18 @@ function redraw() {
 
       // time
       d3.select(this).append("circle")
-        .attr("r", d.Duration.substr(0,1))
-        .attr("cx", x_value(i, radius*1.2))
-        .attr("cy", y_value(i, radius*1.2));
+        .attr("r", function() { 
+          var gd = d.Duration;
+          return (+gd.substr(0,1) + gd.substr(2,2)/60);             
+        })
+        .attr("cx", x_value(i, radius*1.1))
+        .attr("cy", y_value(i, radius*1.1));
 
       // attendance
       d3.select(this).append("circle")
         .attr("r", d.Attendance / 10000)
-        .attr("cx", x_value(i, radius*1.15))
-        .attr("cy", y_value(i, radius*1.15));
+        .attr("cx", x_value(i, radius*1.05))
+        .attr("cy", y_value(i, radius*1.05));
 
       // attendance
       // d3.select(this).append("circle")
