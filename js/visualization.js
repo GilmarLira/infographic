@@ -8,6 +8,7 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 var scale_factor = 15;
 var time = 0;
+var radius = 500;
 
 var x = d3.scale.linear().range([0, width]);
 var y = d3.time.scale().range([height, 0]);
@@ -22,8 +23,9 @@ var chart = d3.select("body").append("svg")
   .attr("height", height);
 
 var games;
-var scores = chart.append("g").attr("id", "scores");
+var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
 var grid = chart.append("g").attr("id", "grid");
+var pie = chart.append("g").attr("id", "pie").attr("transform", "translate("+width/2+", "+height*.75+")");
   
 var format = d3.time.format("%A %b %e %Y");
 
@@ -60,7 +62,7 @@ d3.csv("schedule.csv")
     // Copy data to global variable
     data = rows;
 
-    // Don't show anything in the begining
+    // Show everything in the begining
     time_scrub(rows.length);
   });
 
@@ -74,28 +76,20 @@ function time_scrub(val) {
 
 function redraw() {
 
-  games = scores.selectAll("circle").data(show);
+  games = scores.selectAll("circle").data(show, function(d) { return d.Game; });
 
   games.enter()
     .append("circle")
-    .attr("cx", function(d, i){ return x(i); })
-    .attr("cy", height/2)
+    .attr("cx", function(d, i){ return -Math.cos(Math.PI/2/data.length*i) * radius; })
+    .attr("cy", function(d, i){ return Math.sin(-Math.PI/2/data.length*i) * radius; })
     .attr("r", 0)
     .style("opacity", 0)
     .style("fill", function(d){
       if(d["W/L"].substr(0, 1) === "W") {
-        return "rgba(255, 93, 0, 0.3)";
+        return "rgba(255, 93, 0, 1)";
       } else {
-        return "none";
+        return "rgba(0, 0, 0, 1)";
       }
-    })
-    .style("stroke", function(d){
-      if(d["W/L"].substr(0, 1) === "L") {
-        return "rgba(0, 0, 0, 0.6)";
-      }
-    })
-    .style("stroke-width", function(d){
-      return (d["W/L"].substr(0, 1) === "L") ? scale_factor/2 : 0;
     });
 
   games
@@ -103,7 +97,7 @@ function redraw() {
     .ease("elastic-in")
     .duration(500)
 //     .delay(function(d, i){ return 100+i*50; })
-    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * scale_factor; })
+    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
     .style("opacity", 100);
   
   games.exit()
@@ -204,6 +198,18 @@ function redraw() {
     .remove();
 
 
+  // Draw arc test
+  // field = pie.selectAll("circle").data(show);
+
+  // field.enter()
+  //   .append("circle")
+  //   .attr("r", 5)
+  //   .attr("cx", function(d, i) {
+  //     return Math.cos( Math.PI/show.length * i) * 500 ;
+  //   })
+  //   .attr("cy", function(d, i) {
+  //     return -Math.sin( Math.PI/show.length * i) * 500 ;
+  //   });
 }
 
 // function updateWindow(){
