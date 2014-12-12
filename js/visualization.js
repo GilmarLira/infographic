@@ -10,17 +10,18 @@ var scale_factor = 15;
 var time = 0;
 var radius = 400;
 
-var x = d3.scale.linear().range([0, width]);
-var y = d3.time.scale().range([height, 0]);
+// var x = d3.scale.linear().range([0, width]);
+// var y = d3.time.scale().range([height, 0]);
 
-var xAxis = d3.svg.axis().scale(x)
-  .orient("top").ticks(10);
-var yAxis = d3.svg.axis().scale(y)
-  .orient("right").ticks(5);
+// var xAxis = d3.svg.axis().scale(x)
+//   .orient("top").ticks(10);
+// var yAxis = d3.svg.axis().scale(y)
+//   .orient("right").ticks(5);
 
 var chart = d3.select("body").append("svg")
   .attr("width", width)
-  .attr("height", height);
+  .attr("height", height)
+  .append("g").attr("id", "games").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
 
 var games;
 // var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
@@ -50,13 +51,16 @@ d3.csv("schedule.csv")
   })
   .get(function(error, rows) {
 
+    // Set domain
+    // var x = d3.scale.linear().range([0, width]);
+
     // Set timeline duration
     d3.select(".slider")
       .attr("max", rows.length)
       .property("value", rows.length);
 
     // Get x and y dimensions from data
-    x.domain([0, rows.length]);
+    // x.domain([0, rows.length]);
 //     y.domain(d3.extent(rows, function(d) { return d.Date; }));
 
     // Copy data to global variable
@@ -85,115 +89,118 @@ function x_value(game, r) {
 function redraw() {
 
   games = chart.selectAll("g").data(show, function(d) { return d.Game; });
-  // games = chart.selectAll("g").data(show);
 
-  games.enter()
+  var gamesEnter = games.enter()
     .append("g")
-    .attr("class", "game")
-    .attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)")
-    .each(function(d, i) {
-      // Score
-      d3.select(this).append("circle")
-        .attr("class", "score")
-        .attr("cx", x_value(i, radius))
-        .attr("cy", y_value(i, radius))
-        .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
-        .style("opacity", 0);
-        // .style("fill", function(d){
-        //   return d["W/L"].substr(0, 1) === "W" ? "rgba(255, 93, 0, 1)" : "rgba(0, 0, 0, 1)";
-        // });
+    .attr("class", "game");
 
-      // home game
-      if(d.Place == "") {
-        d3.select(this).append("circle")
-          .attr("r", 2)
-          .attr("cx", x_value(i, radius*1.45))
-          .attr("cy", y_value(i, radius*1.45));  
-      }      
+  gamesEnter.append("circle")
+    .attr("class", "score")
+    .attr("cx", function(d, i) { return x_value(i, radius); })
+    .attr("cy", function(d, i) { return y_value(i, radius); })
+    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
+    .style("opacity", 0);
 
-      // away game
-      if(d.Place == "@") {
-        d3.select(this).append("circle")
-          .attr("r", 2)
-          .attr("cx", x_value(i, radius*1.4))
-          .attr("cy", y_value(i, radius*1.4));  
-      }
+    
+  // home game
+  gamesEnter.each(function (d, i) {
+    if(d.Place == "") {    
+      d3.select(this)
+        .append("circle")
+        .attr("r", 2)
+        .attr("cx", x_value(i, radius*1.45))
+        .attr("cy", y_value(i, radius*1.45));  
+    }
+  });
 
-      // win
-      if(d["W/L"] == "W") {
-        d3.select(this).append("circle")
-          .attr("r", 2)
-          .attr("cx", x_value(i, radius*1.35))
-          .attr("cy", y_value(i, radius*1.35));  
-      }
+  // away game
+  gamesEnter.each(function (d, i) {
+    if(d.Place == "@") {    
+      d3.select(this)
+        .append("circle")
+        .attr("r", 2)
+        .attr("cx", x_value(i, radius*1.4))
+        .attr("cy", y_value(i, radius*1.4));  
+    }
+  });
 
-      // loss
-      if(d["W/L"] == "L") {
-        d3.select(this).append("circle")
-          .attr("r", 2)
-          .attr("cx", x_value(i, radius*1.3))
-          .attr("cy", y_value(i, radius*1.3));  
-      }
+  // win
+  gamesEnter.each(function(d, i) {
+    if(d["W/L"] === "W") {
+      d3.select(this)
+        .append("circle")
+        .attr("r", 2)
+        .attr("cx", x_value(i, radius*1.35))
+        .attr("cy", y_value(i, radius*1.35));  
+    }
+  });
+      
+  // loss 
+  gamesEnter.each(function(d, i) {
+    if(d["W/L"] === "L") {
+      d3.select(this)
+        .append("circle")
+        .attr("r", 2)
+        .attr("cx", x_value(i, radius*1.3))
+        .attr("cy", y_value(i, radius*1.3));  
+    }
+  });
 
-      // scored
-      d3.select(this).append("circle")
-        .attr("r", d.Scored / 2)
-        .attr("cx", x_value(i, radius*1.25))
-        .attr("cy", y_value(i, radius*1.25));
+  // scored
+  gamesEnter.append("circle")
+    .attr("r", function(d, i) { return d.Scored / 2; })
+    .attr("cx", function(d, i) { return x_value(i, radius*1.25); })
+    .attr("cy", function(d, i) { return y_value(i, radius*1.25); });
 
-      // allowed
-      d3.select(this).append("circle")
-        .attr("r", d.Allowed / 2)
-        .attr("cx",x_value(i, radius*1.2))
-        .attr("cy",y_value(i, radius*1.2));
+  // allowed
+  gamesEnter.append("circle")
+    .attr("r", function(d, i) { return d.Allowed / 2; })
+    .attr("cx", function(d, i) { return x_value(i, radius*1.2); })
+    .attr("cy", function(d, i) { return y_value(i, radius*1.2); });
 
-      // rank
-      // d3.select(this).append("circle")
-      //   .attr("r", d.Allowed / 2)
-      //   .attr("cx", x(i))
-      //   .attr("cy", 200);
+  // rank
+  // d3.select(this).append("circle")
+  //   .attr("r", d.Allowed / 2)
+  //   .attr("cx", x(i))
+  //   .attr("cy", 200);
 
-      // time
-      d3.select(this).append("circle")
-        .attr("r", function() { 
-          var gd = d.Duration;
-          return (+gd.substr(0,1) + gd.substr(2,2)/60);             
-        })
-        .attr("cx", x_value(i, radius*1.1))
-        .attr("cy", y_value(i, radius*1.1));
+  // time
+  gamesEnter.append("circle")
+    .attr("r", function(d, i) { 
+      var gd = d.Duration;
+      return (+gd.substr(0,1) + gd.substr(2,2)/60);             
+    })
+    .attr("cx", function(d, i) { return x_value(i, radius*1.1); })
+    .attr("cy", function(d, i) { return y_value(i, radius*1.1); });
 
-      // attendance
-      d3.select(this).append("circle")
-        .attr("r", d.Attendance / 10000)
-        .attr("cx", x_value(i, radius*1.05))
-        .attr("cy", y_value(i, radius*1.05));
+  // attendance
+  gamesEnter.append("circle")
+    .attr("r", function(d, i) { return d.Attendance / 10000; })
+    .attr("cx", function(d, i) { return x_value(i, radius*1.05); })
+    .attr("cy", function(d, i) { return y_value(i, radius*1.05); });
 
       // attendance
       // d3.select(this).append("circle")
       //   .attr("r", d.Attendance / 10000)
       //   .attr("cx", x(i))
-      //   .attr("cy", 240);
-
-
-    });
-    
+      //   .attr("cy", 240);  
 
   games.selectAll("circle")
-    .transition()
-    .ease("elastic-in")
-    .duration(500)
+    // .transition()
+    // .ease("elastic-in")
+    // .duration(500)
     .style("fill", "white")
     // .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
     // .attr("r", 5)
     .style("opacity", .8);
   
   games.exit()
-    .transition()
-    .ease("ease-out")
-    .duration(200)
+    // .transition()
+    // .ease("ease-out")
+    // .duration(200)
 //     .delay(function(d, i){ return 100+i*50; })
-    .attr("r", 0)
-    .style("opacity", 0)
+    // .attr("r", 0)
+    // .style("opacity", 0)
     .remove();
 
   // Add the X Axis
