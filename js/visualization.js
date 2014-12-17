@@ -23,6 +23,15 @@ var runs = 0;
 //   .orient("right").ticks(5);
 
 var scoreBoard = d3.select("#scoreboard");
+var scorevis = d3.select("#scorevis").append("svg").append("g").attr("transform", function() {
+  var x = d3.select("#scorevis").select("svg").node().getBoundingClientRect().width/2;
+  var y = d3.select("#scorevis").select("svg").node().getBoundingClientRect().height/2;
+
+  return "translate(" + x + ", " + y + ")";
+});  
+
+scorevis.append("circle").attr("id", "scorevis-wins");
+scorevis.append("circle").attr("id", "scorevis-losses");
 
 var chart = d3.select("#main").append("svg")
   .append("g").attr("id", "games")
@@ -223,6 +232,12 @@ function redraw() {
   	scoreBoard.select("#wins").text(wins);
 		scoreBoard.select("#losses").text(losses);
 		scoreBoard.select("#runs").text(runs);
+
+    scorevis.select("#scorevis-wins")
+      .attr("r", wins);
+
+    scorevis.select("#scorevis-losses")
+      .attr("r", losses);
   });
   
   games.exit()
