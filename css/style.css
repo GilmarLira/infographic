@@ -7,16 +7,39 @@ body{
 }
 
 body {
-	background: teal;
+	background: #444;
 	margin: 0;
 	overflow-y: hidden;
 	padding: 0;
-	position: relative;
+	font-family: helvetica;
 	/*transition: all .5s ease;*/
 }
 
-g.game {
-	background: #062;
+#container { height: 100%; width: 100%; }
+
+aside { float: left; height: 100%; width: 25%; overflow: hidden;}
+aside header { background-color: black; -webkit-box-sizing: border-box; margin-bottom: 40px; padding: 50px 15px 25px 50px; }
+aside header h1 { text-transform: uppercase; color: white; font-size: 54pt; font-weight: 400; margin: 0; }
+aside header h2 { text-transform: uppercase; color: white; font-size: 14pt; font-weight: 400; margin: 0; }
+aside header h3 { text-transform: uppercase; color: orange; font-size: 14pt; font-weight: 100; margin: 0; }
+aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight: 100; margin: 0; } 
+
+#scoreboard {background: green; webkit-box-sizing: border-box; /*height: 40%;*/ width: 75%; margin-left: 15%; padding: 15px; }
+#scoreboard ul { list-style: none; margin: 0; padding: 20px 0 0 0; font-size: 36pt; color: white; }
+#scoreboard li { margin-bottom: 20px; }
+#scoreboard li span:nth-child(2) { float: right; }
+#scorevis { background: black; height: 30%; margin-left: 10%; width: 80%; }
+
+
+
+
+
+
+#main {
+	float: left;
+	height: 100%;
+	position: relative;
+	width: 75%;
 }
 
 .timeline {

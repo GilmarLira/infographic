@@ -24,10 +24,9 @@ var runs = 0;
 
 var scoreBoard = d3.select("#scoreboard");
 
-var chart = d3.select("body").append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .append("g").attr("id", "games").attr("transform", "translate("+width/2+", "+height+") rotate(45)");
+var chart = d3.select("#main").append("svg")
+  .append("g").attr("id", "games")
+  .attr("transform", "translate("+width/2+", "+height+") rotate(45)");
 
 var games;
 // var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
@@ -205,7 +204,6 @@ function redraw() {
 		if (games[0].length >= 162) {
       if (i == 161) {
   			var wins_losses = d["W-L"];
-        console.log("Wins-Losses: " + wins_losses);
   			var minus_index = wins_losses.indexOf("-");
   	 		wins = wins_losses.substring(0, minus_index);
   	 		losses = wins_losses.substring(minus_index+1);
@@ -214,7 +212,6 @@ function redraw() {
     else{
       if (i == games[0].length-1) {
         var wins_losses = d["W-L"];
-        console.log("Wins-Losses: " + wins_losses);
         var minus_index = wins_losses.indexOf("-");
         wins = wins_losses.substring(0, minus_index);
         losses = wins_losses.substring(minus_index+1);
