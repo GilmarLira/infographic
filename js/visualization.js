@@ -200,19 +200,32 @@ function redraw() {
     // .attr("r", 5)
     .style("opacity", .8);
  
+  runs = 0;
 	games.each(function(d, i) {
-		if (i == 162) {
-			var wins_losses = d["W/L"];
-			var minus_index = wins_losses.indexOf("-");
-	 		wins = wins_losses.substring(0, minus_index);
-	 		losses = wins_losses.substring(minus_index);
-	 	}
+		if (games[0].length >= 162) {
+      if (i == 161) {
+  			var wins_losses = d["W-L"];
+        console.log("Wins-Losses: " + wins_losses);
+  			var minus_index = wins_losses.indexOf("-");
+  	 		wins = wins_losses.substring(0, minus_index);
+  	 		losses = wins_losses.substring(minus_index+1);
+  	 	}
+    }
+    else{
+      if (i == games[0].length-1) {
+        var wins_losses = d["W-L"];
+        console.log("Wins-Losses: " + wins_losses);
+        var minus_index = wins_losses.indexOf("-");
+        wins = wins_losses.substring(0, minus_index);
+        losses = wins_losses.substring(minus_index+1);
+      }
+    } 
  		runs += d.Scored; 
 	})
   .call(function(d, i) {
-  	scoreBoard.select("#wins + dd").text(wins);
-		scoreBoard.select("#losses + dd").text(losses);
-		scoreBoard.select("#runs + dd").text(runs);
+  	scoreBoard.select("#wins").text(wins);
+		scoreBoard.select("#losses").text(losses);
+		scoreBoard.select("#runs").text(runs);
   });
   
   games.exit()
