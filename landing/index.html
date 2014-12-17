@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>The Art of a Dynasty</title>
+    <meta name="description" content="Infographic for World Champion San Francisco Giants">
+
+	<!-- Google Font -->
+		<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+
+	<!-- CSS -->
+        <link rel="stylesheet" href="lib/css/normalize.css">
+        <link rel="stylesheet" href="lib/css/styles.css">
+
+
+    <!-- p5.js -->
+		<style>
+			body{padding: 0; margin:0; overflow: hidden;}
+			canvas{ padding: 0;}
+		</style>
+
+</head>
+<body id="full">
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.10/p5.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.11/addons/p5.sound.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.11/addons/p5.dom.min.js"></script>
+	<script type="text/javascript" src="lib/js/vendor/tween.min.js"></script>
+	<script type="text/javascript" src="lib/js/sketch.js"></script>
+
+	<div id="wrapper" >
+		<section class="col-sm-8 offset-sm-2" id="introScreen">
+			<img src="lib/assets/img/sf.png" alt="SF logo" class="">
+			<h1 class="titleSlide">The Art of a Dynasty</h1>
+			<h2 class="descSlide">An interactive infographic showcasing the three World Series Championship seasons of the San Francisco Giants.</h2>
+		</section>
+		<section class="col-sm-8 offset-sm-2" id="seasonsScreen">
+			<div class="col-12 row">
+				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton">
+				<a href="#" onclick="hideWrapper();">2010
+				</a> 
+				</div>
+
+				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton">
+				<a href="#" onclick="hideWrapper();">2012
+				</a>
+				</div>
+
+				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton clear">
+				<a href="#" onclick="hideWrapper();">2014
+				</a>
+				</div>
+			</div>
+			<div class="col-12 row seriesLogo seasonButton">
+				<img src="lib/assets/img/2010.png" alt="2010" >
+				<img src="lib/assets/img/2012.png" alt="2012" >
+				<img src="lib/assets/img/2014.png" alt="2014" >
+			</div>
+		</section>
+
+	</div>
+</body>
+</html>
