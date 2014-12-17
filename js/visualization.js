@@ -10,6 +10,10 @@ var scale_factor = 15;
 var time = 0;
 var radius = 400;
 
+var wins = 0;
+var losses = 0;
+var runs = 0;
+
 // var x = d3.scale.linear().range([0, width]);
 // var y = d3.time.scale().range([height, 0]);
 
@@ -18,10 +22,12 @@ var radius = 400;
 // var yAxis = d3.svg.axis().scale(y)
 //   .orient("right").ticks(5);
 
+var scoreBoard = d3.select("#scoreboard");
+
 var chart = d3.select("body").append("svg")
   .attr("width", width)
   .attr("height", height)
-  .append("g").attr("id", "games").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
+  .append("g").attr("id", "games").attr("transform", "translate("+width/2+", "+height+") rotate(45)");
 
 var games;
 // var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
@@ -38,14 +44,14 @@ d3.csv("schedule.csv")
     'Place': d[""],
     'Opponent': d.Opp,
     'W/L': d["W/L"],
-    'Scored': d.R,
-    'Allowed': d.RA,
-    'Innings': d.Inn,
+    'Scored': +d.R,
+    'Allowed': +d.RA,
+    'Innings': +d.Inn,
     'W-L': d["W-L"],
     'Rank': +d.Rank,
     'Duration': d.Time,
     'D/N': d["D/N"],
-    'Attendance': d.Attendance,
+    'Attendance': +d.Attendance,
     'Streak': d.Streak
     };
   })
@@ -193,6 +199,21 @@ function redraw() {
     // .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
     // .attr("r", 5)
     .style("opacity", .8);
+ 
+	games.each(function(d, i) {
+		if (i == 162) {
+			var wins_losses = d["W/L"];
+			var minus_index = wins_losses.indexOf("-");
+	 		wins = wins_losses.substring(0, minus_index);
+	 		losses = wins_losses.substring(minus_index);
+	 	}
+ 		runs += d.Scored; 
+	})
+  .call(function(d, i) {
+  	scoreBoard.select("#wins + dd").text(wins);
+		scoreBoard.select("#losses + dd").text(losses);
+		scoreBoard.select("#runs + dd").text(runs);
+  });
   
   games.exit()
     // .transition()
@@ -202,6 +223,7 @@ function redraw() {
     // .attr("r", 0)
     // .style("opacity", 0)
     .remove();
+
 
   // Add the X Axis
   // chart.append("g")
