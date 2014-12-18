@@ -732,16 +732,11 @@ body, html{
 body {
     background: url(../img/grey-bg.png) no-repeat center center fixed;
     background-color: #eee;
-    /*-webkit-background-size: cover;*/
     background-size: cover;
 }
 canvas{
     top:0;
     z-index: -999;
-}
-#wrapper{
-    display:inline-block;
-    margin:0 auto;
 }
 
 h1, h2, h3, h4, h5, h6, p, a{
@@ -770,10 +765,6 @@ p{
     text-transform: uppercase;
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
-}
-
-section{
-
 }
 
 #introScreen{

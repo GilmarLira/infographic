@@ -17,12 +17,7 @@
 	<!--
 	<script src="http://jarvis.local:35729/livereload.js?snipver=1"></script>
 	 -->
-
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.10/p5.min.js"></script>
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.11/addons/p5.sound.min.js"></script>
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.11/addons/p5.dom.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/vendor/tween.min.js"></script>
 	<script type="text/javascript" src="js/vendor/d3.min.js"></script>
 
 	<script>
@@ -35,11 +30,14 @@
 
 		$("body").css("background-color", "#3f3f3f");
 
+		$("#music").animate({volume: 0.1}, 2000);
 	}
 	</script>
 
 </head>
 <body>
+	<audio id="music" src="audio/dusted.mp3" autoplay></audio>
+
 	<div id="container">
 		<aside>
 			<header>
@@ -79,12 +77,12 @@
 		</div>
 
 	<div id="wrapper" >
-		<section class="col-sm-8 offset-sm-2" id="introScreen">
+		<section id="introScreen">
 			<img src="img/sf.png" alt="SF logo" class="">
 			<h1 class="titleSlide">The Art of a Dynasty</h1>
 			<h2 class="descSlide">An interactive infographic showcasing the three World Series Championship seasons of the San Francisco Giants.</h2>
 		</section>
-		<section class="col-sm-8 offset-sm-2" id="seasonsScreen">
+		<section id="seasonsScreen">
 			<div class="col-12 row">
 				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton">
 					<a href="#" onclick="hideWrapper();">2010
