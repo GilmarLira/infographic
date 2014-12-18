@@ -94,6 +94,7 @@ d3.csv("schedule.csv")
 
 function time_scrub(val) {
   // Get games for current timeline slider value
+  // show = val === 0 ? [] : data.slice(0, val);
   show = data.slice(0, val);
 
   // Display those games
@@ -108,23 +109,14 @@ function redraw() {
     .append("g")
     .attr("class", "game");
 
-  // score
-  gamesEnter.append("circle")
-    .attr("class", "score")
-    .attr("cx", function(d, i) { return x_value(i, radius); })
-    .attr("cy", function(d, i) { return y_value(i, radius); })
-    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
-    .style("opacity", 0);
-
-
   // home game
   gamesEnter.each(function (d, i) {
     if(d.Place === "") {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
-        .attr("cx", x_value(i, radius*1.5))
-        .attr("cy", y_value(i, radius*1.5));
+        .attr("cx", x_value(i, radius*(1 + 0.5 * 8/8) ))
+        .attr("cy", y_value(i, radius*(1 + 0.5 * 8/8) ));
     }
   });
 
@@ -134,8 +126,8 @@ function redraw() {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
-        .attr("cx", x_value(i, radius*1.4375))
-        .attr("cy", y_value(i, radius*1.4375));
+        .attr("cx", x_value(i, radius*(1 + 0.5 * 7/8) ))
+        .attr("cy", y_value(i, radius*(1 + 0.5 * 7/8) ));
     }
   });
 
@@ -145,8 +137,8 @@ function redraw() {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
-        .attr("cx", x_value(i, radius*1.375))
-        .attr("cy", y_value(i, radius*1.375));
+        .attr("cx", x_value(i, radius*(1 + 0.5 * 6/8) ))
+        .attr("cy", y_value(i, radius*(1 + 0.5 * 6/8) ));
     }
   });
 
@@ -156,22 +148,22 @@ function redraw() {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
-        .attr("cx", x_value(i, radius*1.3125))
-        .attr("cy", y_value(i, radius*1.3125));
+        .attr("cx", x_value(i, radius*(1 + 0.5 * 5/8) ))
+        .attr("cy", y_value(i, radius*(1 + 0.5 * 5/8) ));
     }
   });
 
   // scored
   gamesEnter.append("circle")
     .attr("r", function(d, i) { return d.Scored / 2; })
-    .attr("cx", function(d, i) { return x_value(i, radius*1.25); })
-    .attr("cy", function(d, i) { return y_value(i, radius*1.25); });
+    .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 4/8) ); })
+    .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 4/8) ); });
 
   // allowed
   gamesEnter.append("circle")
     .attr("r", function(d, i) { return d.Allowed / 2; })
-    .attr("cx", function(d, i) { return x_value(i, radius*1.1875); })
-    .attr("cy", function(d, i) { return y_value(i, radius*1.1875); });
+    .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 3/8) ); })
+    .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 3/8) ); });
 
   // rank
   // d3.select(this).append("circle")
@@ -179,26 +171,30 @@ function redraw() {
   //   .attr("cx", x(i))
   //   .attr("cy", 200);
 
-  // time
+  // duration
   gamesEnter.append("circle")
     .attr("r", function(d, i) {
       var gd = d.Duration;
       return (+gd.substr(0,1) + gd.substr(2,2)/60);
     })
-    .attr("cx", function(d, i) { return x_value(i, radius*1.125); })
-    .attr("cy", function(d, i) { return y_value(i, radius*1.125); });
+    .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 2/8) ); })
+    .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 2/8) ); });
 
   // attendance
   gamesEnter.append("circle")
     .attr("r", function(d, i) { return d.Attendance / 10000; })
-    .attr("cx", function(d, i) { return x_value(i, radius*1.0625); })
-    .attr("cy", function(d, i) { return y_value(i, radius*1.0625); });
+    .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 1/8) ); })
+    .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 1/8) ); });
 
-      // attendance
-      // d3.select(this).append("circle")
-      //   .attr("r", d.Attendance / 10000)
-      //   .attr("cx", x(i))
-      //   .attr("cy", 240);
+  // score
+  gamesEnter.append("circle")
+    .attr("class", "score")
+    .attr("cx", function(d, i) { return x_value(i, radius); })
+    .attr("cy", function(d, i) { return y_value(i, radius); })
+    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
+    .style("opacity", 0);
+
+
 
   games.selectAll("circle")
     // .transition()

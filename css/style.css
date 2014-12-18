@@ -1,34 +1,36 @@
 /* * { outline: 1px solid purple; } */
 
 html, body{ height: 100%; width: 100%; }
-body { background: #444; margin: 0; overflow-y: hidden; padding: 0; font-family: helvetica; /*transition: all .5s ease;*/ }
+body { background: #3f3f3f; margin: 0; overflow-y: hidden; padding: 0; font-family: helvetica; /*transition: all .5s ease;*/ }
 
 #container { height: 100%; width: 100%; }
 
-aside { float: left; height: 100%; width: 25%; overflow: hidden;}
-aside header { background-color: black; -webkit-box-sizing: border-box; margin-bottom: 40px; padding: 50px 15px 25px 50px; }
-aside header h1 { text-transform: uppercase; color: white; font-size: 54pt; font-weight: 400; margin: 0; }
-aside header h2 { text-transform: uppercase; color: white; font-size: 14pt; font-weight: 400; margin: 0; }
-aside header h3 { text-transform: uppercase; color: orange; font-size: 14pt; font-weight: 100; margin: 0; }
+aside { float: left; height: 100%; width: 20%; overflow: hidden; position: relative; }
+aside header { background-color: rgba(0, 0, 0, 0.5); margin-bottom: 20%; padding: 50px 15px 25px 50px; -webkit-box-sizing: border-box; }
+aside header h1 { text-transform: uppercase; color: white; font-size: 42pt; font-weight: 400; margin: 0; }
+aside header h2 { text-transform: uppercase; color: white; font-size: 12pt; font-weight: 400; margin: 0; }
+aside header h3 { text-transform: uppercase; color: #f50; font-size: 12pt; font-weight: 100; margin: 0; }
 aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight: 100; margin: 0; }
 
-#score-container { height: 100%; width: 100%; }
-#scoreboard { background: green; webkit-box-sizing: border-box; float: right; /*height: 40%;*/ margin-bottom: 40px; width: 75%;  padding: 15px; }
-#scoreboard ul { list-style: none; margin: 0; padding: 20px 0 0 0; font-size: 36pt; color: white; }
-#scoreboard li { margin-bottom: 20px; }
+/*#score-container { height: 100%; width: 100%; }*/
+#scoreboard { background: #4f7320; padding: 20px 15px; position: absolute; right: 0; top: 30%; -webkit-box-sizing: border-box; width: 75%; }
+#scoreboard ul { list-style: none; margin: 0; padding: 10px 0 0 0; font-size: 36pt; color: white; }
+#scoreboard li { margin-bottom: 30px; }
 #scoreboard li span:nth-child(2) { float: right; }
-#scorevis { height: 30%; float: right; margin-left: 10%; width: 80%; }
-#scorevis-wins { fill: orange; }
+
+#scorevis { height: 20%; position: absolute; right: 0; top: 70%; width: 80%; }
+#scorevis svg { width: 100%; height: 100%; }
+#scorevis-wins { fill: #f50; }
 #scorevis-losses { fill: black; }
 
-#main { float: left; height: 100%; position: relative; width: 75%; }
-#main svg { height: 100%; width: 100%; }
+#main { float: left; height: 100%; position: relative; width: 80%; }
+#main svg { height: 100%; width: 100%; pointer-events: none; }
 #main .background { background: url("../img/diamond.png"); background-position-y: 60%; background-position-x: 48%; background-size: contain; background-repeat: no-repeat; height: 95%; width: 100%; position: absolute; z-index: -1; }
 
-.timeline { bottom: 10%; /*height: 20px;*/ margin: 0 5%; position:absolute; width: 90%; }
-.slider { background-color: #888; height: 5px; margin: 0 auto; width: 100%; -webkit-appearance: none; }
+.timeline { bottom: 10%; margin: 0 5%; position: absolute; width: 90%; }
+.slider { background-color: rgba(223, 223, 223, 0.5); height: 4px; margin: 0 auto; width: 100%; -webkit-appearance: none; border-radius: 2px; }
 .slider:focus { outline: none; }
-.slider::-webkit-slider-thumb { -webkit-appearance: none; background-color: white; height: 30px; width: 30px; border-radius: 15px; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; background-color: rgba(137, 137, 137, 0.55); height: 30px; width: 30px; border-radius: 15px; }
 
-text { font-family: helvetica; font-size: 14px; fill: #bebebe; }
+text { font-family: helvetica; font-size: 16px; fill: #bebebe; }
 .axis path, .axis line { fill: none; stroke: none; shape-rendering: crispEdges; }
