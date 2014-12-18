@@ -1,3 +1,4 @@
+
 /////////////////////////////////////////////////
 // D3.js Data Visualization
 /////////////////////////////////////////////////
@@ -13,9 +14,6 @@ var radius = height/2;
 var wins = 0;
 var losses = 0;
 var runs = 0;
-
-// var x = d3.scale.linear().range([0, width]);
-// var y = d3.time.scale().range([height, 0]);
 
 var scoreBoard = d3.select("#scoreboard");
 var scorevis = d3.select("#scorevis").append("svg").append("g").attr("transform", function() {
@@ -119,10 +117,6 @@ function redraw() {
         .attr("r", 4 * factor)
         .attr("cx", x_value(i, radius*(1 + 0.5 * 8/8) ))
         .attr("cy", y_value(i, radius*(1 + 0.5 * 8/8) ));
-        // .transition()
-        // .ease("elastic-in")
-        // .duration(500)
-        // .attr("r", 4);
     }
   });
 
@@ -171,12 +165,6 @@ function redraw() {
     .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 3/8) ); })
     .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 3/8) ); });
 
-  // rank
-  // d3.select(this).append("circle")
-  //   .attr("r", d.Allowed / 2)
-  //   .attr("cx", x(i))
-  //   .attr("cy", 200);
-
   // duration
   gamesEnter.append("circle")
     .attr("r", function(d, i) {
@@ -200,7 +188,7 @@ function redraw() {
     .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * factor; });
 
 
-
+  var n = 0;
   gamesEnter
     .style("fill", "#f50")
     .transition()
@@ -246,16 +234,13 @@ function redraw() {
   games.exit()
     .selectAll("circle")
     .transition()
-    .ease("ease-out")
-    .duration(300)
-    .attr("r", 0)
-    .each("end", function() {
-      d3.select(this).remove();
-    });
+    // .ease("ease-out")
+    .duration(200)
+    .attr("r", 0);
 
   games.exit()
     .transition()
-    .duration(400)
+    .duration(200)
     .each("end", function() {
       d3.select(this).remove();
     });

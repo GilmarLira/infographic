@@ -7,7 +7,7 @@ function setup() {
 	// titleScreen = createDiv('<h1>seasons</h1> <h2>A browser enabled music visualizer </h2> <a href="seasons.html">fall</a>');
 
 	// pickerScreen = createDiv('<p>Pick a season, turn on your mic, play your music, enjoy</p> <button>Spring</button><button>Summer</button> <button>Fall</button> <button>Winter</button>');
-	
+
 	// footer = createDiv('<footer>hey</footer>');
 
 
@@ -29,7 +29,7 @@ function draw(){
 
 // On key press, hide all elements with class donkey.
 function keyPressed() {
-  // getElements() returns an array of elements with class donkey. 
+  // getElements() returns an array of elements with class donkey.
   // If none are found, it returns an empty array [].
 
 
