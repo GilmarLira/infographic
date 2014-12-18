@@ -206,7 +206,7 @@ function redraw() {
     .transition()
     .duration(300)
     .style("fill", "#fff")
-    .style("opacity", 0.7)
+    // .style("opacity", 0.7)
     .selectAll("circle")
     .attr("r", function() { return d3.select(this).attr("r")/2; });
 
@@ -244,13 +244,22 @@ function redraw() {
   });
 
   games.exit()
-    // .transition()
-    // .ease("ease-out")
-    // .duration(200)
-    // .delay(function(d, i){ return i * 20; })
-    // .attr("r", 0)
-    // .style("opacity", 0)
-    .remove();
+    .selectAll("circle")
+    .transition()
+    .ease("ease-out")
+    .duration(300)
+    .attr("r", 0)
+    .each("end", function() {
+      d3.select(this).remove();
+    });
+
+  games.exit()
+    .transition()
+    .duration(400)
+    .each("end", function() {
+      d3.select(this).remove();
+    });
+
 }
 
 function y_value(game, r) {
