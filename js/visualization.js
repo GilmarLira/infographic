@@ -35,7 +35,13 @@ scorevis.append("circle").attr("id", "scorevis-losses");
 
 var chart = d3.select("#main").append("svg")
   .append("g").attr("id", "games")
-  .attr("transform", "translate("+width/2+", "+height+") rotate(45)");
+  // .attr("transform", "translate("+width/2+", "+height+") rotate(45)");
+  .attr("transform", function() {
+    var x = d3.select("#main").select("svg").node().getBoundingClientRect().width/2;
+    var y = d3.select("#main").select("svg").node().getBoundingClientRect().height*.90;
+
+    return "translate(" + x + ", " + y + ") rotate(45) scale(.8)";
+  });
 
 var games;
 // var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
