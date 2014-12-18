@@ -1,4 +1,4 @@
-* The Art of the Dynasty
+## The Art of the Dynasty
 
 A d3.js data-driven infographic visualizer final project made for the AAU Web Design New Media Fall 2014 - Generative Art course.
 [Class Repository](https://github.com/rybotron/wnm498genart_f14)
