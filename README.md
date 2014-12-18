@@ -13,6 +13,9 @@ Directions:
 Open the landing page and choose between any three of the seasons shown. The visualization will automatically animate on screen. Use the scrollbar to slide between each game data point and see just what the San Francisco Giants season is composed of across the graph.
 
 Project Components:
+
 [Gilmar Lira](https://github.com/GilmarLira): Tech Guru
+
 [Kristin Bessette](https://github.com/kristinbessette): Visual Design/Animation
+
 [Alexis Britt](https://github.com/alexisbritt): Visual Design
