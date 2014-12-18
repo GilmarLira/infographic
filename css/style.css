@@ -1,19 +1,7 @@
 /* * { outline: 1px solid purple; } */
 
-html,
-body{
-	height: 100%;
-	width: 100%;
-}
-
-body {
-	background: #444;
-	margin: 0;
-	overflow-y: hidden;
-	padding: 0;
-	font-family: helvetica;
-	/*transition: all .5s ease;*/
-}
+html, body{ height: 100%; width: 100%; }
+body { background: #444; margin: 0; overflow-y: hidden; padding: 0; font-family: helvetica; /*transition: all .5s ease;*/ }
 
 #container { height: 100%; width: 100%; }
 
@@ -33,54 +21,14 @@ aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight:
 #scorevis-wins { fill: orange; }
 #scorevis-losses { fill: black; }
 
+#main { float: left; height: 100%; position: relative; width: 75%; }
+#main svg { height: 100%; width: 100%; }
+#main .background { background: url("../img/diamond.png"); background-position-y: 60%; background-position-x: 50%; background-size: 80%; background-repeat: no-repeat; height: 100%; width: 100%; position: absolute; z-index: -1; }
 
+.timeline { bottom: 10%; /*height: 20px;*/ margin: 0 5%; position:absolute; width: 90%; }
+.slider { background-color: #888; height: 5px; margin: 0 auto; width: 100%; -webkit-appearance: none; }
+.slider:focus { outline: none; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; background-color: white; height: 30px; width: 30px; border-radius: 15px; }
 
-
-
-#main {
-	float: left;
-	height: 100%;
-	position: relative;
-	width: 75%;
-}
-
-.timeline {
-	bottom: 50px;
-	/*height: 20px;*/
-	margin: 0 5%;
-	position:absolute;
-	width: 90%;
-}
-
-.slider {
-	background-color: #888;
-	height: 5px;
-	margin: 0 auto;
-	width: 100%;
-	-webkit-appearance: none;
-}
-
-.slider:focus {
-	outline: none;
-}
-
-.slider::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	background-color: white;
-	height: 30px;
-	width: 30px;
-	border-radius: 15px;
-}
-
-text {
-	font-family: helvetica;
-	font-size: 18px;
-}
-
-.axis path,
-.axis line {
-	fill: none;
-	stroke: grey;
-	stroke-width: 1;
-	shape-rendering: crispEdges;
-}
+text { font-family: helvetica; font-size: 18px; }
+.axis path, .axis line { fill: none; stroke: grey; stroke-width: 1; shape-rendering: crispEdges; }

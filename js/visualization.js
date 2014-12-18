@@ -38,7 +38,7 @@ var chart = d3.select("#main").append("svg")
   // .attr("transform", "translate("+width/2+", "+height+") rotate(45)");
   .attr("transform", function() {
     var x = d3.select("#main").select("svg").node().getBoundingClientRect().width/2;
-    var y = d3.select("#main").select("svg").node().getBoundingClientRect().height*.90;
+    var y = d3.select("#main").select("svg").node().getBoundingClientRect().height*0.9;
 
     return "translate(" + x + ", " + y + ") rotate(45) scale(.8)";
   });
@@ -107,8 +107,6 @@ function x_value(game, r) {
 }
 
 function redraw() {
-<<<<<<< Updated upstream
-
   games = chart.selectAll("g").data(show, function(d) { return d.Game; });
 
   var gamesEnter = games.enter()
