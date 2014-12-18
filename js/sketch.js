@@ -15,6 +15,7 @@ var container;
       function init() {
 
         container = document.createElement( 'div' );
+        // document.body.appendChild( container );
         $("#ball").append( container );
 
         camera = new THREE.PerspectiveCamera( 15, window.innerWidth / window.innerHeight, 10.1, 1000 );

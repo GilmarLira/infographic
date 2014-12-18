@@ -3,8 +3,9 @@
 html, body{ height: 100%; width: 100%; }
 body { background: url(../img/grey-bg.png) no-repeat center center cover; background-color: #ddd; margin: 0; overflow: hidden; padding: 0; font-family: helvetica; transition: background .6s ease; }
 
-#container { height: 100%; width: 100%; opacity: 0; position: absolute; }
-#wrapper { display: inline-block; width: 60%; margin-left: 20%; position: relative; top: 15%; }
+#ball { position: absolute; z-index: -999; opacity: .1; overflow: hidden; }
+#container { height: 100%; width: 100%; opacity: 0; position: absolute; overflow: hidden; }
+#wrapper { display: inline-block; width: 60%; margin-left: 20%; position: relative; top: 15%; overflow: hidden; }
 
 aside { float: left; height: 100%; width: 20%; overflow: hidden; position: relative; }
 aside header { background-color: rgba(0, 0, 0, 0.5); margin-bottom: 20%; padding: 50px 15px 25px 50px; -webkit-box-sizing: border-box; }
@@ -18,7 +19,7 @@ aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight:
 
 /*#score-container { height: 100%; width: 100%; }*/
 #scoreboard { background: #4f7320; padding: 20px 20px 10px 20px; position: absolute; left: 50px; top: 30%; -webkit-box-sizing: border-box; width: 75%; }
-#scoreboard ul { list-style: none; margin: 0; padding: 20px 0 0 0; font-family: "Oswald"; font-size: 36pt; line-height: 60pt; color: white; }
+#scoreboard ul { list-style: none; margin: 0; padding: 20px 0 0 0; font-family: "Oswald"; font-size: 60pt; line-height: 60pt; color: white; }
 #scoreboard li { margin-bottom: 20px; }
 #scoreboard li span:nth-child(1) { font-size: 60pt; }
 #scoreboard li:nth-child(3) { line-height: 24pt; }
