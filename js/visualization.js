@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////
 // D3.js Data Visualization
 /////////////////////////////////////////////////
-
+var file;
 var data;
 var show;
 var width = window.innerWidth;
@@ -39,7 +39,8 @@ var games;
 
 var format = d3.time.format("%A %b %e %Y");
 
-d3.csv("schedule.csv")
+function visualize(year) {
+  d3.csv(year + ".csv")
   .row(function(d) { return {
     'Game': +d["Gm#"],
     'Date': format.parse(d.Date + " 2014"),
@@ -59,6 +60,9 @@ d3.csv("schedule.csv")
     };
   })
   .get(function(error, rows) {
+    if(games){
+      games.remove();
+    }
 
     // Set timeline duration
     d3.select(".slider")
@@ -89,6 +93,7 @@ d3.csv("schedule.csv")
         .attr("transform", "rotate(-90)")
         .style("text-anchor", "end");
   });
+}
 
 function time_scrub(val) {
   // Get games for current timeline slider value
@@ -254,7 +259,6 @@ function y_value(game, r) {
 function x_value(game, r) {
     return -Math.cos(Math.PI/2/data.length*game) * r;
 }
-
 
 // function updateWindow(){
 //     width = window.innerWidth;

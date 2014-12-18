@@ -8,7 +8,10 @@ body { background: url(../img/grey-bg.png) no-repeat center center cover; backgr
 
 aside { float: left; height: 100%; width: 20%; overflow: hidden; position: relative; }
 aside header { background-color: rgba(0, 0, 0, 0.5); margin-bottom: 20%; padding: 50px 15px 25px 50px; -webkit-box-sizing: border-box; }
-aside header h1 { text-transform: uppercase; color: white; font-size: 42pt; font-weight: 400; margin: 0; text-align: left; }
+aside header h1 { text-transform: uppercase; color: #666; font-size: 36pt; font-weight: 400; margin: 0; text-align: left; }
+aside header h1 span:not(.active) { cursor: pointer; transition: color .4s ease-in-out; }
+aside header h1 span:not(.active):hover { color: #999; }
+aside header h1 span.active { color: #fff !important; cursor: auto; }
 aside header h2 { text-transform: uppercase; color: white; font-size: 12pt; font-weight: 400; margin: 0; text-align: left; }
 aside header h3 { text-transform: uppercase; color: #f50; font-size: 12pt; font-weight: 100; margin: 0; text-align: left; }
 aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight: 100; margin: 0; }
@@ -36,7 +39,7 @@ aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight:
 .timeline { bottom: 10%; margin: 0 5%; position: absolute; width: 90%; }
 .slider { background-color: rgba(223, 223, 223, 0.5); height: 4px; margin: 0 auto; width: 100%; -webkit-appearance: none; border-radius: 2px; }
 .slider:focus { outline: none; }
-.slider::-webkit-slider-thumb { -webkit-appearance: none; background-color: rgba(137, 137, 137, 0.55); height: 30px; width: 30px; border-radius: 15px; }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; background-color: rgba(255, 255, 255, 0.7); height: 30px; width: 30px; border-radius: 15px; }
 
 text { font-family: helvetica; font-size: 16px; fill: #bebebe; }
 .axis path, .axis line { fill: none; stroke: none; shape-rendering: crispEdges; }

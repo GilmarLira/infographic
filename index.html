@@ -31,7 +31,21 @@
 		$("body").css("background-color", "#3f3f3f");
 
 		$("#music").animate({volume: 0.1}, 2000);
+
+		var year = $(event.target).attr("class");
+		visualize(year);
+
+		$("span." + year).addClass("active");
 	}
+
+	function switch_year(e) {
+		if($(e).not(".active")) {
+			var year = $(e).attr("class");
+			visualize(year);
+			$(e).addClass("active").siblings().removeClass("active");			
+		}
+	}
+
 	</script>
 
 </head>
@@ -42,7 +56,11 @@
 		<aside>
 			<header>
 				<h2>The Art of a Dynasty</h2>
-				<h1>2014</h1>
+				<h1>
+					<span class="2010" onclick="switch_year(this)">2010</span>
+					<span class="2012" onclick="switch_year(this)">2012</span>
+					<span class="2014" onclick="switch_year(this)">2014</span>
+				</h1>
 				<h3>#Championstogether</h2>
 			</header>
 			<!-- <div id="score-container"> -->
@@ -85,17 +103,17 @@
 		<section id="seasonsScreen">
 			<div class="col-12 row">
 				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton">
-					<a href="#" onclick="hideWrapper();">2010
+					<a href="#" onclick="hideWrapper();" class="2010">2010
 					</a>
 				</div>
 
 				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton">
-					<a href="#" onclick="hideWrapper();">2012
+					<a href="#" onclick="hideWrapper();" class="2012">2012
 					</a>
 				</div>
 
 				<div class="col-md-4 offset-md-0 col-sm-10 offset-sm-1 col-xs-10 offset-xs-1 year seasonButton clear">
-					<a href="#" onclick="hideWrapper();">2014
+					<a href="#" onclick="hideWrapper();" class="2014">2014
 					</a>
 				</div>
 			</div>
