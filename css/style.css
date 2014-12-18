@@ -22,7 +22,7 @@ aside header { background-color: black; -webkit-box-sizing: border-box; margin-b
 aside header h1 { text-transform: uppercase; color: white; font-size: 54pt; font-weight: 400; margin: 0; }
 aside header h2 { text-transform: uppercase; color: white; font-size: 14pt; font-weight: 400; margin: 0; }
 aside header h3 { text-transform: uppercase; color: orange; font-size: 14pt; font-weight: 100; margin: 0; }
-aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight: 100; margin: 0; } 
+aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight: 100; margin: 0; }
 
 #score-container { height: 100%; width: 100%; }
 #scoreboard { background: green; webkit-box-sizing: border-box; float: right; /*height: 40%;*/ margin-bottom: 40px; width: 75%;  padding: 15px; }

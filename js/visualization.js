@@ -28,7 +28,7 @@ var scorevis = d3.select("#scorevis").append("svg").append("g").attr("transform"
   var y = d3.select("#scorevis").select("svg").node().getBoundingClientRect().height/2;
 
   return "translate(" + x + ", " + y + ")";
-});  
+});
 
 scorevis.append("circle").attr("id", "scorevis-wins");
 scorevis.append("circle").attr("id", "scorevis-losses");
@@ -47,7 +47,7 @@ var games;
 // var scores = chart.append("g").attr("id", "scores").attr("transform", "translate("+width/2+", "+height*.75+") rotate(45)");
 // var grid = chart.append("g").attr("id", "grid");
 // var pie = chart.append("g").attr("id", "pie").attr("transform", "translate("+width/2+", "+height*.75+")");
-  
+
 var format = d3.time.format("%A %b %e %Y");
 
 d3.csv("schedule.csv")
@@ -107,6 +107,7 @@ function x_value(game, r) {
 }
 
 function redraw() {
+<<<<<<< Updated upstream
 
   games = chart.selectAll("g").data(show, function(d) { return d.Game; });
 
@@ -121,26 +122,26 @@ function redraw() {
     .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
     .style("opacity", 0);
 
-    
+
   // home game
   gamesEnter.each(function (d, i) {
-    if(d.Place == "") {    
+    if(d.Place == "") {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
         .attr("cx", x_value(i, radius*1.45))
-        .attr("cy", y_value(i, radius*1.45));  
+        .attr("cy", y_value(i, radius*1.45));
     }
   });
 
   // away game
   gamesEnter.each(function (d, i) {
-    if(d.Place == "@") {    
+    if(d.Place == "@") {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
         .attr("cx", x_value(i, radius*1.4))
-        .attr("cy", y_value(i, radius*1.4));  
+        .attr("cy", y_value(i, radius*1.4));
     }
   });
 
@@ -151,18 +152,18 @@ function redraw() {
         .append("circle")
         .attr("r", 2)
         .attr("cx", x_value(i, radius*1.35))
-        .attr("cy", y_value(i, radius*1.35));  
+        .attr("cy", y_value(i, radius*1.35));
     }
   });
-      
-  // loss 
+
+  // loss
   gamesEnter.each(function(d, i) {
     if(d["W/L"] === "L") {
       d3.select(this)
         .append("circle")
         .attr("r", 2)
         .attr("cx", x_value(i, radius*1.3))
-        .attr("cy", y_value(i, radius*1.3));  
+        .attr("cy", y_value(i, radius*1.3));
     }
   });
 
@@ -186,9 +187,9 @@ function redraw() {
 
   // time
   gamesEnter.append("circle")
-    .attr("r", function(d, i) { 
+    .attr("r", function(d, i) {
       var gd = d.Duration;
-      return (+gd.substr(0,1) + gd.substr(2,2)/60);             
+      return (+gd.substr(0,1) + gd.substr(2,2)/60);
     })
     .attr("cx", function(d, i) { return x_value(i, radius*1.1); })
     .attr("cy", function(d, i) { return y_value(i, radius*1.1); });
@@ -203,7 +204,7 @@ function redraw() {
       // d3.select(this).append("circle")
       //   .attr("r", d.Attendance / 10000)
       //   .attr("cx", x(i))
-      //   .attr("cy", 240);  
+      //   .attr("cy", 240);
 
   games.selectAll("circle")
     // .transition()
@@ -212,32 +213,32 @@ function redraw() {
     .style("fill", "white")
     // .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
     // .attr("r", 5)
-    .style("opacity", .8);
- 
+    .style("opacity", 0.8);
+
   runs = 0;
 	games.each(function(d, i) {
 		if (games[0].length >= 162) {
-      if (i == 161) {
-  			var wins_losses = d["W-L"];
-  			var minus_index = wins_losses.indexOf("-");
-  	 		wins = wins_losses.substring(0, minus_index);
-  	 		losses = wins_losses.substring(minus_index+1);
-  	 	}
-    }
-    else{
-      if (i == games[0].length-1) {
-        var wins_losses = d["W-L"];
-        var minus_index = wins_losses.indexOf("-");
-        wins = wins_losses.substring(0, minus_index);
-        losses = wins_losses.substring(minus_index+1);
-      }
-    } 
- 		runs += d.Scored; 
+          if (i == 161) {
+      			var wins_losses = d["W-L"];
+      			var minus_index = wins_losses.indexOf("-");
+      	 		wins = wins_losses.substring(0, minus_index);
+      	 		losses = wins_losses.substring(minus_index+1);
+      	 	}
+        }
+        else{
+          if (i == games[0].length-1) {
+            var wins_losses = d["W-L"];
+            var minus_index = wins_losses.indexOf("-");
+            wins = wins_losses.substring(0, minus_index);
+            losses = wins_losses.substring(minus_index+1);
+          }
+        }
+ 		runs += d.Scored;
 	})
   .call(function(d, i) {
   	scoreBoard.select("#wins").text(wins);
-		scoreBoard.select("#losses").text(losses);
-		scoreBoard.select("#runs").text(runs);
+	scoreBoard.select("#losses").text(losses);
+	scoreBoard.select("#runs").text(runs);
 
     scorevis.select("#scorevis-wins")
       .attr("r", wins);
@@ -245,7 +246,7 @@ function redraw() {
     scorevis.select("#scorevis-losses")
       .attr("r", losses);
   });
-  
+
   games.exit()
     // .transition()
     // .ease("ease-out")
