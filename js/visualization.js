@@ -103,7 +103,9 @@ function time_scrub(val) {
 
 
 function redraw() {
-  games = chart.selectAll(".game").data(show, function(d) { return d.Game; });
+  games = chart.selectAll("g.game").data(show, function(d) { return d.Game; });
+
+  var factor = 2;
 
   var gamesEnter = games.enter()
     .append("g")
@@ -114,9 +116,13 @@ function redraw() {
     if(d.Place === "") {
       d3.select(this)
         .append("circle")
-        .attr("r", 2)
+        .attr("r", 4 * factor)
         .attr("cx", x_value(i, radius*(1 + 0.5 * 8/8) ))
         .attr("cy", y_value(i, radius*(1 + 0.5 * 8/8) ));
+        // .transition()
+        // .ease("elastic-in")
+        // .duration(500)
+        // .attr("r", 4);
     }
   });
 
@@ -125,7 +131,7 @@ function redraw() {
     if(d.Place == "@") {
       d3.select(this)
         .append("circle")
-        .attr("r", 2)
+        .attr("r", 4 * factor)
         .attr("cx", x_value(i, radius*(1 + 0.5 * 7/8) ))
         .attr("cy", y_value(i, radius*(1 + 0.5 * 7/8) ));
     }
@@ -136,7 +142,7 @@ function redraw() {
     if(d["W/L"] === "W") {
       d3.select(this)
         .append("circle")
-        .attr("r", 2)
+        .attr("r", 4 * factor)
         .attr("cx", x_value(i, radius*(1 + 0.5 * 6/8) ))
         .attr("cy", y_value(i, radius*(1 + 0.5 * 6/8) ));
     }
@@ -147,7 +153,7 @@ function redraw() {
     if(d["W/L"] === "L") {
       d3.select(this)
         .append("circle")
-        .attr("r", 2)
+        .attr("r", 4*factor)
         .attr("cx", x_value(i, radius*(1 + 0.5 * 5/8) ))
         .attr("cy", y_value(i, radius*(1 + 0.5 * 5/8) ));
     }
@@ -155,13 +161,13 @@ function redraw() {
 
   // scored
   gamesEnter.append("circle")
-    .attr("r", function(d, i) { return d.Scored / 2; })
+    .attr("r", function(d, i) { return d.Scored / 1 * factor; })
     .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 4/8) ); })
     .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 4/8) ); });
 
   // allowed
   gamesEnter.append("circle")
-    .attr("r", function(d, i) { return d.Allowed / 2; })
+    .attr("r", function(d, i) { return d.Allowed / 1 * factor; })
     .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 3/8) ); })
     .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 3/8) ); });
 
@@ -175,14 +181,14 @@ function redraw() {
   gamesEnter.append("circle")
     .attr("r", function(d, i) {
       var gd = d.Duration;
-      return (+gd.substr(0,1) + gd.substr(2,2)/60);
+      return (+gd.substr(0,1) + gd.substr(2,2)/60)*1.5 * factor;
     })
     .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 2/8) ); })
     .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 2/8) ); });
 
   // attendance
   gamesEnter.append("circle")
-    .attr("r", function(d, i) { return d.Attendance / 10000; })
+    .attr("r", function(d, i) { return d.Attendance / 8000 * factor; })
     .attr("cx", function(d, i) { return x_value(i, radius*(1 + 0.5 * 1/8) ); })
     .attr("cy", function(d, i) { return y_value(i, radius*(1 + 0.5 * 1/8) ); });
 
@@ -191,19 +197,20 @@ function redraw() {
     .attr("class", "score")
     .attr("cx", function(d, i) { return x_value(i, radius); })
     .attr("cy", function(d, i) { return y_value(i, radius); })
-    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) ; })
-    .style("opacity", 0);
+    .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * factor; });
 
 
 
-  games.selectAll("circle")
-    // .transition()
-    // .ease("elastic-in")
-    // .duration(500)
-    .style("fill", "white")
-    // .attr("r", function(d) { return Math.abs((d.Scored-d.Allowed)) * 2; })
-    // .attr("r", 5)
-    .style("opacity", 0.8);
+  gamesEnter
+    .style("fill", "#f50")
+    .transition()
+    .duration(300)
+    .style("fill", "#fff")
+    .style("opacity", 0.7)
+    .selectAll("circle")
+    .attr("r", function() { return d3.select(this).attr("r")/2; });
+
+
 
   runs = 0;
 	games.each(function(d, i) {
@@ -240,7 +247,7 @@ function redraw() {
     // .transition()
     // .ease("ease-out")
     // .duration(200)
-    // .delay(function(d, i){ return 100+i*50; })
+    // .delay(function(d, i){ return i * 20; })
     // .attr("r", 0)
     // .style("opacity", 0)
     .remove();
