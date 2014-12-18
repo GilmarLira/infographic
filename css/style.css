@@ -23,12 +23,12 @@ aside p { text-transform: uppercase; color: white; font-size: 10pt; font-weight:
 
 #main { float: left; height: 100%; position: relative; width: 75%; }
 #main svg { height: 100%; width: 100%; }
-#main .background { background: url("../img/diamond.png"); background-position-y: 60%; background-position-x: 50%; background-size: 80%; background-repeat: no-repeat; height: 100%; width: 100%; position: absolute; z-index: -1; }
+#main .background { background: url("../img/diamond.png"); background-position-y: 60%; background-position-x: 48%; background-size: contain; background-repeat: no-repeat; height: 95%; width: 100%; position: absolute; z-index: -1; }
 
 .timeline { bottom: 10%; /*height: 20px;*/ margin: 0 5%; position:absolute; width: 90%; }
 .slider { background-color: #888; height: 5px; margin: 0 auto; width: 100%; -webkit-appearance: none; }
 .slider:focus { outline: none; }
 .slider::-webkit-slider-thumb { -webkit-appearance: none; background-color: white; height: 30px; width: 30px; border-radius: 15px; }
 
-text { font-family: helvetica; font-size: 18px; }
-.axis path, .axis line { fill: none; stroke: grey; stroke-width: 1; shape-rendering: crispEdges; }
+text { font-family: helvetica; font-size: 14px; fill: #bebebe; }
+.axis path, .axis line { fill: none; stroke: none; shape-rendering: crispEdges; }
